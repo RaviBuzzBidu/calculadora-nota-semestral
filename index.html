@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Nota Final</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Calculadora de Nota Final</h2>
+        <input type="number" id="p1" placeholder="Digite a nota da Prova 1 (P1)" step="0.01" min="0" max="10">
+        <input type="number" id="pesoP1" placeholder="Peso da Prova 1 (ex: 0.7)" step="0.01" min="0" max="1">
+        <input type="number" id="pr1" placeholder="Digite a nota do Projeto 1 (PR1)" step="0.01" min="0" max="10">
+        <input type="number" id="pesoPR1" placeholder="Peso do Projeto 1 (ex: 0.3)" step="0.01" min="0" max="1">
+        <input type="number" id="p2" placeholder="Digite a nota da Prova 2 (P2)" step="0.01" min="0" max="10">
+        <input type="number" id="pesoP2" placeholder="Peso da Prova 2 (ex: 0.7)" step="0.01" min="0" max="1">
+        <input type="number" id="pr2" placeholder="Digite a nota do Projeto 2 (PR2)" step="0.01" min="0" max="10">
+        <input type="number" id="pesoPR2" placeholder="Peso do Projeto 2 (ex: 0.3)" step="0.01" min="0" max="1">
+        <input type="number" id="pi" placeholder="Digite a Nota do Projeto Integrador (PI)" step="0.01" min="0" max="10">
+        <input type="number" id="exame" placeholder="Digite a Nota do Exame (se aplicável)" style="display: none;" step="0.01" min="0" max="10">
+        <button onclick="calcularNotaFinal()">Calcular Nota Final</button>
+        <button onclick="calcularNotaNecessaria()">Calcular Nota Necessária para Média 7</button>
+        <button onclick="calcularNotaFinalComExame()">Calcular Nota Final Após Exame</button>
+        <div class="result" id="resultado"></div>
+    </div>
+    <script>
+        function calcularNotaFinal() {
+            let p1 = parseFloat(document.getElementById('p1').value);
+            let pesoP1 = parseFloat(document.getElementById('pesoP1').value);
+            let pr1 = parseFloat(document.getElementById('pr1').value);
+            let pesoPR1 = parseFloat(document.getElementById('pesoPR1').value);
+            let p2 = parseFloat(document.getElementById('p2').value);
+            let pesoP2 = parseFloat(document.getElementById('pesoP2').value);
+            let pr2 = parseFloat(document.getElementById('pr2').value);
+            let pesoPR2 = parseFloat(document.getElementById('pesoPR2').value);
+            let pi = parseFloat(document.getElementById('pi').value);
+
+            if (isNaN(p1) || isNaN(pesoP1) || isNaN(pr1) || isNaN(pesoPR1) || isNaN(p2) || isNaN(pesoP2) || isNaN(pr2) || isNaN(pesoPR2) || isNaN(pi)) {
+                alert("Por favor, insira todas as notas e pesos.");
+                return;
+            }
+
+            let n1 = (pesoP1 * p1) + (pesoPR1 * pr1);
+            let n2 = (pesoP2 * p2) + (pesoPR2 * pr2);
+            let notaFinal = ((n1 * 2) + (n2 * 2) + pi) / 5;
+
+            let resultadoTexto = `N1: ${n1.toFixed(2)}, N2: ${n2.toFixed(2)}, Nota Final: ${notaFinal.toFixed(2)}. `;
+            if (notaFinal >= 7) {
+                resultadoTexto += "Você foi aprovado!";
+            } else {
+                resultadoTexto += "Você não foi aprovado na média e precisa fazer o exame.";
+                document.getElementById('exame').style.display = "block";
+                resultadoTexto += "\nDigite a nota do exame e clique no botão 'Calcular Nota Final Após Exame'.";
+            }
+
+            document.getElementById('resultado').innerText = resultadoTexto;
+        }
+
+        function calcularNotaNecessaria() {
+            let p1 = parseFloat(document.getElementById('p1').value);
+            let pesoP1 = parseFloat(document.getElementById('pesoP1').value);
+            let pr1 = parseFloat(document.getElementById('pr1').value);
+            let pesoPR1 = parseFloat(document.getElementById('pesoPR1').value);
+            let p2 = parseFloat(document.getElementById('p2').value);
+            let pesoP2 = parseFloat(document.getElementById('pesoP2').value);
+            let pr2 = parseFloat(document.getElementById('pr2').value);
+            let pesoPR2 = parseFloat(document.getElementById('pesoPR2').value);
+            let pi = parseFloat(document.getElementById('pi').value);
+
+            let n1 = isNaN(p1) || isNaN(pr1) ? null : (pesoP1 * p1) + (pesoPR1 * pr1);
+            let n2 = isNaN(p2) || isNaN(pr2) ? null : (pesoP2 * p2) + (pesoPR2 * pr2);
+
+            let notaFinalDesejada = 7 * 5; // Média 7 vezes o total de pesos
+            let somaNotas = (n1 ? n1 * 2 : 0) + (n2 ? n2 * 2 : 0) + (isNaN(pi) ? 0 : pi);
+
+            let resultadoTexto = "Para alcançar a média 7, você precisa de: \n";
+
+            if (n1 === null) {
+                let notaNecessariaP1PR1 = (notaFinalDesejada - somaNotas) / 2;
+                let p1Necessaria = (notaNecessariaP1PR1 - (pesoPR1 * pr1)) / pesoP1;
+                resultadoTexto += Nota P1 necessária: ${p1Necessaria.toFixed(2)} ou \n;
+                let pr1Necessaria = (notaNecessariaP1PR1 - (pesoP1 * p1)) / pesoPR1;
+                resultadoTexto += Nota PR1 necessária: ${pr1Necessaria.toFixed(2)} \n;
+            } 
+
+            if (n2 === null) {
+                let notaNecessariaP2PR2 = (notaFinalDesejada - somaNotas) / 2;
+                let p2Necessaria = (notaNecessariaP2PR2 - (pesoPR2 * pr2)) / pesoP2;
+                resultadoTexto += Nota P2 necessária: ${p2Necessaria.toFixed(2)} ou \n;
+                let pr2Necessaria = (notaNecessariaP2PR2 - (pesoP2 * p2)) / pesoPR2;
+                resultadoTexto += Nota PR2 necessária: ${pr2Necessaria.toFixed(2)} \n;
+            }
+
+            if (isNaN(pi)) {
+                let piNecessaria = notaFinalDesejada - somaNotas;
+                resultadoTexto += Nota PI necessária: ${piNecessaria.toFixed(2)} \n;
+            }
+
+            if (n1 !== null && n2 !== null && !isNaN(pi)) {
+                resultadoTexto = "Você já inseriu todas as notas. Use o botão 'Calcular Nota Final' para ver seu resultado.";
+            }
+document.getElementById('resultado').innerText = resultadoTexto;
+        }
+
+        function calcularNotaFinalComExame() {
+            let p1 = parseFloat(document.getElementById('p1').value);
+            let pesoP1 = parseFloat(document.getElementById('pesoP1').value);
+            let pr1 = parseFloat(document.getElementById('pr1').value);
+            let pesoPR1 = parseFloat(document.getElementById('pesoPR1').value);
+            let p2 = parseFloat(document.getElementById('p2').value);
+            let pesoP2 = parseFloat(document.getElementById('pesoP2').value);
+            let pr2 = parseFloat(document.getElementById('pr2').value);
+            let pesoPR2 = parseFloat(document.getElementById('pesoPR2').value);
+            let pi = parseFloat(document.getElementById('pi').value);
+            let notaExame = parseFloat(document.getElementById('exame').value);
+
+            if (isNaN(p1) || isNaN(pesoP1) || isNaN(pr1) || isNaN(pesoPR1) || isNaN(p2) || isNaN(pesoP2) || isNaN(pr2) || isNaN(pesoPR2) || isNaN(pi) || isNaN(notaExame)) {
+                alert("Por favor, insira todas as notas e pesos.");
+                return;
+            }
+
+            let n1 = (pesoP1 * p1) + (pesoPR1 * pr1);
+            let n2 = (pesoP2 * p2) + (pesoPR2 * pr2);
+            let notaFinal = ((n1 * 2) + (n2 * 2) + pi) / 5;
+            let mediaFinalComExame = (notaFinal + notaExame) / 2;
+
+            let resultadoTexto = `N1: ${n1.toFixed(2)}, N2: ${n2.toFixed(2)}, Nota Final: ${notaFinal.toFixed(2)}, Nota Final Após Exame: ${mediaFinalComExame.toFixed(2)}. `;
+            if (mediaFinalComExame >= 5) {
+                resultadoTexto += "Você foi aprovado após o exame!";
+            } else {
+                resultadoTexto += "Você não foi aprovado.";
+            }
+
+            document.getElementById('resultado').innerText = resultadoTexto;
+        }
+    </script>
+</body>
+</html>
