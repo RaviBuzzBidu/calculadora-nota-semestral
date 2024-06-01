@@ -89,9 +89,7 @@
                 resultadoTexto += "Você não foi aprovado na média e precisa fazer o exame.";
                 document.getElementById('exame').style.display = "block";
                 resultadoTexto += "\nDigite a nota do exame e clique no botão 'Calcular Nota Final Após Exame'.";
-            }
-
-            document.getElementById('resultado').innerText = resultadoTexto;
+            } document.getElementById('resultado').innerText = resultadoTexto;
         }
 
         function calcularNotaNecessaria() {
@@ -116,28 +114,29 @@
             if (n1 === null) {
                 let notaNecessariaP1PR1 = (notaFinalDesejada - somaNotas) / 2;
                 let p1Necessaria = (notaNecessariaP1PR1 - (pesoPR1 * pr1)) / pesoP1;
-                resultadoTexto += Nota P1 necessária: ${p1Necessaria.toFixed(2)} ou \n;
+                resultadoTexto += `Nota P1 necessária: ${p1Necessaria.toFixed(2)} ou \n`;
                 let pr1Necessaria = (notaNecessariaP1PR1 - (pesoP1 * p1)) / pesoPR1;
-                resultadoTexto += Nota PR1 necessária: ${pr1Necessaria.toFixed(2)} \n;
+                resultadoTexto += `Nota PR1 necessária: ${pr1Necessaria.toFixed(2)} \n`;
             } 
 
             if (n2 === null) {
                 let notaNecessariaP2PR2 = (notaFinalDesejada - somaNotas) / 2;
                 let p2Necessaria = (notaNecessariaP2PR2 - (pesoPR2 * pr2)) / pesoP2;
-                resultadoTexto += Nota P2 necessária: ${p2Necessaria.toFixed(2)} ou \n;
+                resultadoTexto += `Nota P2 necessária: ${p2Necessaria.toFixed(2)} ou \n`;
                 let pr2Necessaria = (notaNecessariaP2PR2 - (pesoP2 * p2)) / pesoPR2;
-                resultadoTexto += Nota PR2 necessária: ${pr2Necessaria.toFixed(2)} \n;
+                resultadoTexto += `Nota PR2 necessária: ${pr2Necessaria.toFixed(2)} \n`;
             }
 
             if (isNaN(pi)) {
                 let piNecessaria = notaFinalDesejada - somaNotas;
-                resultadoTexto += Nota PI necessária: ${piNecessaria.toFixed(2)} \n;
+                resultadoTexto += `Nota PI necessária: ${piNecessaria.toFixed(2)} \n`;
             }
 
             if (n1 !== null && n2 !== null && !isNaN(pi)) {
                 resultadoTexto = "Você já inseriu todas as notas. Use o botão 'Calcular Nota Final' para ver seu resultado.";
             }
-document.getElementById('resultado').innerText = resultadoTexto;
+
+            document.getElementById('resultado').innerText = resultadoTexto;
         }
 
         function calcularNotaFinalComExame() {
